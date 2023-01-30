@@ -1,6 +1,6 @@
 #include <MIDI.h>  // https://www.arduino.cc/reference/en/libraries/midi-library/
 #define NUM_BUTTONS  6
-#define CHANNEL 1 //0=cnl1, 1=cnl2,... F=cnl16
+#define CHANNEL 1 //1=cnl1, 2=cnl2,...
 #define BTN_DELAY 370
 
 const uint8_t btn1 = 2;
