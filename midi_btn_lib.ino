@@ -2,6 +2,7 @@
 #define NUM_BUTTONS  6
 #define CHANNEL 1 //1=cnl1, 2=cnl2,...
 #define BTN_DELAY 370
+#define potCCNumber 100
 
 const uint8_t btn1 = 2;
 const uint8_t btn2 = 3;
@@ -15,6 +16,9 @@ const int pedalPot = 0;  //A0 input
 const uint8_t buttons[NUM_BUTTONS] = {btn1, btn2, btn3, btn4, btn5, btn6};
 
 uint8_t intensity;
+uint8_t lastIntensity = 0;
+const int maxPot = 1010;  //1023
+const int minPot = 10;  //0
 
 MIDI_CREATE_DEFAULT_INSTANCE();
 
@@ -26,7 +30,7 @@ void setup(){
 
 void loop() {
     readButtons();
-    // readPedal();
+    readPedal();
 }
 
 void readButtons(){
@@ -56,10 +60,12 @@ void readButtons(){
     }
 }
 
-/*
 void readPedal()
 {
-  int val = analogRead(pedalPot);
-  intensity = (uint8_t) (map(val, 0, 1023, 0, 127));
+    int val = analogRead(pedalPot);
+    intensity = (uint8_t) (map(val, minPot, maxPot, 0, 127));
+    if (intensity != lastIntensity){
+        MIDI.sendControlChange(potCCNumber, intensity, CHANNEL);
+        lastIntensity = intensity;
+      }
 }
-*/
